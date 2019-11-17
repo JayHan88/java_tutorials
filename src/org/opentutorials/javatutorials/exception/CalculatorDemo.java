@@ -1,30 +1,39 @@
 package org.opentutorials.javatutorials.exception;
 
+// unchecked or checked Exception
+class DivideException extends Exception {
+    public int left;
+    public int right;
+
+    DivideException(String message, int left, int right){
+        super(message);
+        this.left = left;
+        this.right = right;
+    }
+}
 class Calculator{
     int left, right;
     public void setOprands(int left, int right){
         this.left = left;
         this.right = right;
     }
-    public void divide(){
-        try {
-            System.out.print("계산결과는 ");
-            System.out.print(this.left/this.right);
-            System.out.print(" 입니다.");
-        } catch(Exception e){
-            System.out.println("\n\ne.getMessage()\n"+e.getMessage());
-            System.out.println("\n\ne.toString()\n"+e.toString());
-            System.out.println("\n\ne.printStackTrace()");
-            e.printStackTrace();
+    public void divide() throws DivideException{
+        if(this.right == 0){
+            throw new DivideException("0으로 나누는 것은 허용되지 않습니다.", this.left, this.right);
         }
-        System.out.println("Divide End");
+        System.out.print(this.left/this.right);
     }
 }
-
 public class CalculatorDemo {
     public static void main(String[] args) {
         Calculator c1 = new Calculator();
         c1.setOprands(10, 0);
-        c1.divide();
+        try {
+            c1.divide();
+        } catch (DivideException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.left);
+            System.out.println(e.right);
+        }
     }
 }
